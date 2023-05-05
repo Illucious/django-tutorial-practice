@@ -22,7 +22,10 @@ monthly_challenges = {
 
 
 def challenges_main(request):
-    return HttpResponse("This is the main page for challenges.")
+    months=list(monthly_challenges.keys())
+    return render(request, 'challenges/index.html', {
+        'month_list': months
+    })
 
 
 """
@@ -37,18 +40,20 @@ def february_challenge(request):
 
 
 def monthly_challenge(request, month):
-    parsing_string=render_to_string('challenges/challenge.html')
-    return HttpResponse(parsing_string)
-    #try:
-        #challenge_text = monthly_challenges[month]
-        #return HttpResponse(challenge_text)
+    month_name = monthly_challenges[month]
+    return render(request, "challenges/challenge.html", {
+        'month_name': month,
+        'text': monthly_challenges[month],
+    })
+    # try:
+    # challenge_text = monthly_challenges[month]
+    # return HttpResponse(challenge_text)
 
-    #except:
-        #return HttpResponseNotFound("This month is not supported.")
-
+    # except:
+    # return HttpResponseNotFound("This month is not supported.")
 
 
 def monthly_challenge_by_number(request, month):
-    months=list(monthly_challenges.keys())
-    redirect_month=months[month-1] # -1 cause indices start at 0
+    months = list(monthly_challenges.keys())
+    redirect_month = months[month-1]  # -1 cause indices start at 0
     return HttpResponseRedirect('/challenges/'+redirect_month)
